@@ -61,5 +61,5 @@ end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
-gem 'hirb', '~> 0.7.3'
 gem 'better_errors', '~> 2.8', '>= 2.8.3'
+gem 'hirb', '~> 0.7.3'
