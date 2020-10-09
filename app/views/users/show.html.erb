@@ -7,3 +7,6 @@
     </ul>
   </article>
 </section>
+<% unless @user.id == current_user.id || current_user.friendships.include?(@user)%>
+<%= button_to "Add Friend", friendships_path, params: {friend_id: @user.id}%>
+<%end%>
