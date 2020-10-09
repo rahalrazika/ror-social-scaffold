@@ -1,5 +1,8 @@
 <section class="user-section">
   <h2><%= "Name: #{@user.name}" %></h2>
+<% unless @user.id == current_user.id || current_user.friendships.include?(@user) %>
+  <%= button_to "Add Friend", friendships_path, params: {friend_id: @user.id}%>
+<% end %>
   <article class="timeline">
     <h3>Recent posts:</h3>
     <ul class="posts">
@@ -7,6 +10,3 @@
     </ul>
   </article>
 </section>
-<% unless @user.id == current_user.id || current_user.friendships.include?(@user)%>
-<%= button_to "Add Friend", friendships_path, params: {friend_id: @user.id}%>
-<%end%>
