@@ -1,5 +1,13 @@
 <section class="users-section">
   <ul class="users-list">
-    <%= render @users %>
+    <% @users.each do |user|%>
+   <li> Name: <%= user.name%> </li>
+   <span class = "profile-link">
+   <%= link_to "See Profile", user_path(user), class: 'profile-link'%>
+    <% unless user.id == current_user.id || current_user.friendships.include?(user) %>
+     <%= button_to "Add Friend", friendships_path, params: {friend_id: user.id}%>
+    <% end %>
+   </span>
+   <%end%>
   </ul>
 </section>
