@@ -10,7 +10,12 @@ class FriendshipsController < ApplicationController
   end
 
   def destroy
-    Friendship.find(params[:id]).destroy
+    @friendship = current_user.friendships.where(friend_id: params[:id]).first
+    if @friendship.destroy
+      flash[:notice] = 'You are no longer friends'
+    else
+      flash[:alert] = 'Friendship error, please try again'
+    end
     redirect_to root_path
   end
 
