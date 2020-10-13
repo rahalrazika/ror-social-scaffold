@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe User, type: :model do
+RSpec.describe User, :type => :model do
     before {@user = FactoryBot.build(:user)}
 
     it "is not valid with out any attributes" do
