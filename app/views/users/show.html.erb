@@ -1,9 +1,12 @@
 <section class="user-section">
   <h2><%= "Name: #{@user.name}" %></h2>
 
-<% unless @user.id == current_user.id || current_user.friendships.include?(@user) %>
+<% unless @user.id == current_user.id || current_user.friendships.where(friend_id: @user.id).count > 0 %>
   <%= button_to "Add Friend", friendships_path, params: {friend_id: @user.id}%>
 <% end %>
+<% if current_user.friendships.where(friend_id: @user.id).count > 0 %>   
+    <%= button_to "Remove Friend", friendship_path(@user), :method => :delete %>
+    <% end %>
   <article class="timeline">
     <h3>Recent posts:</h3>
     <ul class="posts">
