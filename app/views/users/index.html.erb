@@ -3,15 +3,20 @@
     <% @users.each do |user|%>
     <%unless current_user.id == user.id%>
    <li> Name: <%= user.name %> </li>
+    <% if current_user.friendships.where(friend_id: user.id, confirmed: false).count > 0  %>
+    <p>Friendship Request Pending</p>
+    <%end%>
 
    <span class = "profile-link">
    <%= link_to "See Profile", user_path(user), class: 'profile-link'%>
-    <% unless user.id == current_user.id || current_user.friendships.where(friend_id: user.id, confirmed: false).count > 0 %>
+    <% unless user.id == current_user.id || current_user.friendships.where(friend_id: user.id).count > 0 %>
      <%= button_to "Add Friend", friendships_path, params: {friend_id: user.id}%>
     <% end %>
-    <% if current_user.friendships.where(friend_id: user.id).count > 0 %>   
+
+    <% if current_user.friendships.where(friend_id: user.id, confirmed: true).count > 0  %>   
     <%= button_to "Remove Friend", friendship_path(user), :method => :delete %>
     <% end %>
+
        <%end%>
    </span>
    <%end%>
