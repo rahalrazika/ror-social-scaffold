@@ -6,7 +6,7 @@
 
    <span class = "profile-link">
    <%= link_to "See Profile", user_path(user), class: 'profile-link'%>
-    <% unless user.id == current_user.id || current_user.friendships.where(friend_id: user.id).count > 0 %>
+    <% unless user.id == current_user.id || current_user.friendships.where(friend_id: user.id, confirmed: false).count > 0 %>
      <%= button_to "Add Friend", friendships_path, params: {friend_id: user.id}%>
     <% end %>
     <% if current_user.friendships.where(friend_id: user.id).count > 0 %>   
