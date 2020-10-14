@@ -1,24 +1,27 @@
 <section class="users-section">
   <ul class="users-list">
+      <% @users.each do |user| %>
+        <% unless user.id == current_user.id || current_user.friendships.where(friend_id: current_user.id, user_id: user.id, confirmed: false).count > 0|| current_user.friendships.where(friend_id: current_user.id, user_id: user.id, confirmed: false).count > 0 %>
+          <li> Friend Request: <%= user.name%> </li>
+        <%end%>
+      <%end%>
+  </ul>
+  <ul class="users-list">
+  
     <% @users.each do |user|%>
     <%unless current_user.id == user.id%>
    <li> Name: <%= user.name %> </li>
-    <% if current_user.friendships.where(friend_id: user.id, confirmed: false).count > 0  %>
+    <% if current_user.friendships.where(friend_id: user.id, user_id: current_user.id, confirmed: false).count > 0 %>   
     <p>Friendship Request Pending</p>
+    <% elsif current_user.friendships.where(friend_id: user.id, user_id: current_user.id, confirmed: true).count > 0 %>
+        <%= button_to "Remove Friend", friendship_path(user), :method => :delete %>
+    <% else current_user.friendships.where(friend_id: current_user.id, user_id: user.id, confirmed: false).count > 0%>
+     <%= button_to "Add Friend", friendships_path, params: {friend_id: user.id}%>
     <%end%>
 
    <span class = "profile-link">
    <%= link_to "See Profile", user_path(user), class: 'profile-link'%>
-    <% unless user.id == current_user.id || current_user.friendships.where(friend_id: user.id).count > 0 %>
-     <%= button_to "Add Friend", friendships_path, params: {friend_id: user.id}%>
-    <% end %>
-
-    <% if current_user.friendships.where(friend_id: user.id, confirmed: true).count > 0  %>   
-    <%= button_to "Remove Friend", friendship_path(user), :method => :delete %>
-    <% end %>
-
-       <%end%>
+  
    </span>
-   <%end%>
-  </ul>
-</section>
+       <%end%>
+<%end%>
