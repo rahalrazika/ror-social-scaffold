@@ -9,19 +9,26 @@ class FriendshipsController < ApplicationController
     redirect_to root_path
   end
 
-  def destroy
-    @friendship = current_user.friendships.where(friend_id: params[:id]).first
-    if @friendship.destroy
-      flash[:notice] = 'You are no longer friends'
+  def update
+    @friendship = Friendship.where(friend_id: current_user.id, user_id: params[:id]).first
+    if @friendship.update(confirmed: true)
+      flash[:notice] = 'Friendship accepted'
     else
       flash[:alert] = 'Friendship error, please try again'
     end
     redirect_to root_path
   end
 
-  private
-
-  def friendship_params
-    params.require(:frienship).permit(confirmed: true)
+  def destroy
+    unless Friendship.where(friend_id: params[:id]).first.nil?
+      @friendship = Friendship.where(friend_id: params[:id]).first
+    end
+    @friendship = Friendship.where(user_id: params[:id]).first unless Friendship.where(user_id: params[:id]).first.nil?
+    if @friendship.destroy
+      flash[:notice] = 'You are no longer friends'
+    else
+      flash[:alert] = 'Friendship error, please try again'
+    end
+    redirect_to root_path
   end
 end
