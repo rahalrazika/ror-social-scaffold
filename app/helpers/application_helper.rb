@@ -17,7 +17,7 @@ module ApplicationHelper
   end
 
   def request_recieved?(user)
-    user.friendships.where(friend_id: current_user.id, user_id: user.id, confirmed: false).count > 0 
+    user.friendships.where(friend_id: current_user.id, user_id: user.id, confirmed: false).count > 0
   end
 
   def current_user_is_user?(user)
