@@ -15,4 +15,24 @@ module ApplicationHelper
       link_to('Like!', post_likes_path(post_id: post.id), method: :post)
     end
   end
+
+  def request_recieved?(user)
+    user.friendships.where(friend_id: current_user.id, user_id: user.id, confirmed: false).count > 0 
+  end
+
+  def current_user_is_user?(user)
+    current_user.id == user.id
+  end
+
+  def request_sent?(user)
+    current_user.friendships.where(friend_id: user.id, user_id: current_user.id, confirmed: false).count > 0
+  end
+
+  def is_friend?(user)
+    current_user.friendships.where(friend_id: user.id, user_id: current_user.id, confirmed: false).count > 0
+  end
+
+  def is_friend_reverse?(user)
+    user.friendships.where(user_id: user.id, friend_id: current_user.id, confirmed: true).count > 0
+  end
 end
