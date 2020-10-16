@@ -19,9 +19,9 @@
     <% if request_sent?(user) %>   
     <p>Friendship Request Pending</p>
     <%= button_to "Cancel Request", friendship_path(user.id), method: :delete %>
-    <% elsif is_friend?(user)%>
+    <% elsif friend?(user)%>
       <%= button_to "Unfriend", friendship_path(user.id), method: :delete %>
-    <% elsif is_friend_reverse?(user)%>
+    <% elsif friend_reverse?(user)%>
       <%= button_to "Unfriend", friendship_path(current_user.id), method: :delete %>     
     <% elsif request_sent?(user)%>
       <%= button_to "Decline Request", friendship_path(current_user.id), method: :delete %>

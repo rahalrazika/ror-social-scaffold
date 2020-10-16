@@ -13,7 +13,7 @@
 
   <ul class="posts">  
     <% @timeline_posts.each do |post|%>
-    <% if post.user.id == current_user.id  || Friendship.where(friend_id: post.user.id, confirmed: true).count > 0 || Friendship.where(user_id: post.user.id, confirmed: true).count > 0 %>
+    <% if current_user_is_user?(post)  ||  post_belong_to_friend?(post) || post_belong_to_user?(post) %>
 <li class="post">
   <div>
     <div class='post-attribution' >
