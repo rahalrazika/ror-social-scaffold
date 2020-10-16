@@ -31,7 +31,7 @@
   </p>
 
   <div class='post-comments-section'>
-  <p>Posts: <%= Comment.where(post_id: post.id).count %></p>
+  <p>Comments: <%= Comment.where(post_id: post.id).count %></p>
     <%= render partial: 'comments/comment', collection: post.comments %>
 
     <%= form_for(post.comments.new, url: post_comments_path(post)) do |form| %>
