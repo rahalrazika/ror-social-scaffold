@@ -37,11 +37,15 @@ module ApplicationHelper
   end
 
   def post_belong_to_friend?(post)
-    Friendship.where(friend_id: post.user.id, confirmed: true).count.positive?
+    Friendship.where(friend_id: post.user.id, user_id: current_user.id, confirmed: true).count.positive?
+  end
+
+  def post_belong_to_friend_reverse?(post)
+    Friendship.where(friend_id: current_user.id, user_id: post.user.id, confirmed: true).count.positive?
   end
 
   def post_belong_to_user?(post)
-    Friendship.where(user_id: post.user.id).count.positive?
+    post.user.id == current_user.id
   end
 
   def friend_requests(user)
