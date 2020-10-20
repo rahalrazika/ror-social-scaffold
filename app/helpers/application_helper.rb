@@ -1,4 +1,3 @@
-# rubocop:disable Metrics/ModuleLength
 module ApplicationHelper
   def menu_link_to(link_text, link_path)
     class_name = current_page?(link_path) ? 'menu-item active' : 'menu-item'
@@ -126,10 +125,11 @@ module ApplicationHelper
   end
 
   def mutual_friends(user)
+    return if current_user_is_user?(user)
+
     html = ''
     result = (friends_with_me?(user) + friends_with?(user)).count / 2
     html << "<h2>Mutual Friends: #{result}</h2>"
     html.html_safe
   end
 end
-# rubocop:enable Metrics/ModuleLength
