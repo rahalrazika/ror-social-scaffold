@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/ModuleLength
 module ApplicationHelper
   def menu_link_to(link_text, link_path)
     class_name = current_page?(link_path) ? 'menu-item active' : 'menu-item'
@@ -133,3 +134,4 @@ module ApplicationHelper
     html.html_safe
   end
 end
+# rubocop:enable Metrics/ModuleLength
