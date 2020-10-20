@@ -106,8 +106,8 @@ module ApplicationHelper
   end
 
   def friends_with_me?(user)
-    friends1 = Friendship.where(user_id: user.id, confirmed: true)
-    friends2 = Friendship.where(friend_id: user.id, confirmed: true)
+    friends1 = Friendship.where(user_id: current_user.id, confirmed: true)
+    friends2 = Friendship.where(friend_id: current_user.id, confirmed: true)
     direct1 = Friendship.where(user_id: current_user.id, friend_id: user.id, confirmed: true)
     direct2 = Friendship.where(user_id: user.id, friend_id: current_user.id, confirmed: true)
     direct = direct1 + direct2
@@ -116,8 +116,8 @@ module ApplicationHelper
   end
 
   def friends_with?(user)
-    friendships1 = Friendship.where(friend_id: current_user.id, confirmed: true)
-    friendships2 = Friendship.where(user_id: current_user.id, confirmed: true)
+    friendships1 = Friendship.where(friend_id: user.id, confirmed: true)
+    friendships2 = Friendship.where(user_id: user.id, confirmed: true)
     direct1 = Friendship.where(user_id: current_user.id, friend_id: user.id, confirmed: true)
     direct2 = Friendship.where(user_id: user.id, friend_id: current_user.id, confirmed: true)
     direct = direct1 + direct2
@@ -129,8 +129,40 @@ module ApplicationHelper
     return if current_user_is_user?(user)
 
     html = ''
-    result = (friends_with_me?(user) + friends_with?(user)).count / 2
-    html << "<h2>Mutual Friends: #{result}</h2>"
+    arr1 = []
+    arr2 = []
+
+    friends_with?(user).each do |friend|
+      arr1 << friend.user unless friend.user.name == user.name
+      arr1 << friend.friend unless friend.friend.name == user.name
+    end
+
+    friends_with_me?(user).each do |friend|
+      arr2 << friend.friend unless friend.friend.name == current_user.name
+      arr2 << friend.user unless friend.user.name == current_user.name
+    end
+    new_arry = arr1 & arr2
+
+    new_arry.each do |friend|
+      html << "<h2>Mutual Friends: #{friend.name}</h2>"
+    end
+    html.html_safe
+  end
+
+  def all_friends(user)
+    return if current_user_is_user?(user)
+
+    html = ''
+    friends_with?(user).each do |friend|
+      html << "<h2>#{user.name} Friends: #{friend.user.name}</h2>" unless friend.user.name == user.name
+      html << "<h2>#{user.name} Friends: #{friend.friend.name}</h2>" unless friend.friend.name == user.name
+    end
+
+    friends_with_me?(user).each do |friend|
+      html << "<h2>My Friends: #{friend.friend.name} </h2>" unless friend.friend.name == current_user.name
+      html << "<h2>My Friends: #{friend.user.name} </h2>" unless friend.user.name == current_user.name
+    end
+
     html.html_safe
   end
 end
