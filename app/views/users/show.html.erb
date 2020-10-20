@@ -1,5 +1,7 @@
 <section class="user-section">
   <%=user_show_friendship_button(@user)%>
+  <%= all_friends(@user) %>
+  <%= mutual_friends(@user) %>
 
   <article class="timeline">
     <h3>Recent posts:</h3>
