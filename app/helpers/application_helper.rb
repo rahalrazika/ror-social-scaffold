@@ -103,4 +103,33 @@ module ApplicationHelper
     end
     html.html_safe
   end
+  def friends_with_me?(user)
+    friends1 = Friendship.where(user_id: user.id, confirmed: true) 
+    friends2 = Friendship.where(friend_id: user.id, confirmed: true)
+    direct1 = Friendship.where(user_id: current_user.id, friend_id: user.id, confirmed: true) 
+    direct2 = Friendship.where(user_id: user.id, friend_id: current_user.id, confirmed: true) 
+    direct = direct1 + direct2
+    friends = (friends1 + friends2) - direct
+    friends
+  end
+
+  def friends_with?(user)
+    friendships1 = Friendship.where(friend_id: current_user.id, confirmed: true)
+    friendships2 = Friendship.where(user_id: current_user.id, confirmed: true)
+    direct1 = Friendship.where(user_id: current_user.id, friend_id: user.id, confirmed: true) 
+    direct2 = Friendship.where(user_id: user.id, friend_id: current_user.id, confirmed: true) 
+    direct = direct1 + direct2
+    friendships = (friendships1 + friendships2) - direct
+    friendships
+  end
+
+  def mutual_friends(user)
+    html = ''
+    result = 0
+    if friend?(user) || friend_reverse?(user) 
+      result = (friends_with_me?(user)+friends_with?(user)).count    
+    end
+    html << "<h2>Mutual Friends: #{result}</h2>"
+    html.html_safe
+  end
 end
