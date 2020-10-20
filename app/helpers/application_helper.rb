@@ -127,8 +127,7 @@ module ApplicationHelper
 
   def mutual_friends(user)
     html = ''
-    result = 0
-    result = (friends_with_me?(user) + friends_with?(user)).count / 2 if friend?(user) || friend_reverse?(user)
+    result = (friends_with_me?(user) + friends_with?(user)).count / 2
     html << "<h2>Mutual Friends: #{result}</h2>"
     html.html_safe
   end
